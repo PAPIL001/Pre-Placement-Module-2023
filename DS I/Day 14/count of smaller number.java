@@ -1,32 +1,24 @@
 class Solution {
-    public List<Integer> countSmaller(int[] nums) {
-        LinkedList<Integer> result = new LinkedList<>();
-        List<Integer> list = new ArrayList<>();
-        for(int i = nums.length-1; i >= 0; i--) {
-            int idx = binarySearch(list, nums[i]);
-            result.addFirst(idx);
-            list.add(idx, nums[i]);
+    public int[] searchRange(int[] a, int k) {
+        
+        // First Position
+        int p=0, q=a.length-1;
+        while(p<=q) {
+            int m=(p+q)/2;
+            if(a[m]>=k) q=m-1;
+            else if(a[m]<k) p=m+1;
         }
-        return result;
-    }
-    
-	
-    public int binarySearch(List<Integer> list, int num) {
-        int left = 0;
-        int right = list.size()-1;
-        int mid;
-        while(left < right) {
-            mid = left + (right-left)/2;
-            if(list.get(mid) < num) {
-                left = mid+1;
-            }
-            else {
-                right = mid;
-            }
+        int l = q+1<a.length && a[q+1]==k ? q+1 : -1;
+        
+        // Last Position
+        p=0; q=a.length-1;
+        while(p<=q) {
+            int m=(p+q)/2;
+            if(a[m]>k) q=m-1;
+            else if(a[m]<=k) p=m+1;
         }
-        if(!list.isEmpty() && list.get(left) < num) {
-            return left+1;
-        }
-        return left;
+        int r = p-1>=0 && a[p-1]==k ? p-1 : -1;
+
+        return new int[]{l, r};
     }
 }
